@@ -3,7 +3,7 @@ Sriniharikakondepudi
 Team member: Sri Niharika Kondepudi
 An intelligent web application that uses Natural Language Processing (NLP) and AI to analyze resumes, score them against job descriptions, and provide personalized, actionable feedback for improvement.
 
-You can chec teh live demo https://youtu.be/YXdmB9qWNDo
+You can check the live demo https://youtu.be/YXdmB9qWNDo
 
 ## Project Overview
 Applying for jobs is a competitive process. Many companies use automated Applicant Tracking Systems (ATS) that can reject a well-qualified candidate due to simple formatting issues or a lack of specific keywords. This tool was built to help job seekers overcome this challenge.
