@@ -1,5 +1,11 @@
-flask
+Flask
+gunicorn
 PyMuPDF
 python-docx
-python-dateutil
 spacy
+transformers
+torch
+Pillow
+pytesseract
+werkzeug
+markdown2
