@@ -37,15 +37,11 @@ Downloadable Reports: Users can download their detailed analysis report as a PDF
 This project is a monolithic web application built with Flask. It uses a server-side rendering approach where the Python backend performs all the analysis and then renders an HTML template with the results.
 ![alt text](image.png)
 ## Technology Stack
-Category	Technology	Purpose
-Backend	Python, Flask, Gunicorn	Web server, application logic, and production server
-NLP & AI	spaCy, Hugging Face Transformers	Language understanding, summarization, keyword matching
-Parsing	PyMuPDF, python-docx	Reading text from PDF and DOCX files
-OCR	Tesseract, Pillow	Extracting text from image-based documents
-Frontend	HTML, CSS, JavaScript	User interface and report visualization
-Deployment	Docker	Containerization for consistent, reliable deployment
-
-Export to Sheets
+Backend	Python, Flask
+NLP & AI	spaCy, Hugging Face Transformers
+Parsing	PyMuPDF, python-docx
+OCR	Tesseract, Pillow
+Frontend	HTML, CSS, JavaScript
 ## Local Setup and Installation
 To run this project on your local machine, follow these steps.
 
@@ -57,53 +53,63 @@ Git
 
 Tesseract OCR (you must install this on your system for the OCR feature to work. See the official Tesseract installation guide).
 
-Installation Steps:
+## Installation Steps:
 
 Clone the repository:
 
-Bash
 
-git clone https://github.com/YourUsername/your-repo-name.git
-cd your-repo-name
-Create and activate a virtual environment:
+git clone https://github.com/NiharikaKondepudi/AI_RESUME_ANALYZER_BASED_ON_ATS
 
-Bash
+cd AI_RESUME_ANALYZER_BASED_ON_ATS
+
+
+## Create and activate a virtual environment:
 
 python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-Install all required Python packages:
 
-Bash
+On Windows, use: 
+venv\Scripts\activate
+
+On mac, use:
+source venv/bin/activate
+
+
+## Install all required Python packages:
+
+
 
 pip install -r requirements.txt
-Download the spaCy NLP model:
 
-Bash
+
+## Download the spaCy NLP model:
+
 
 python -m spacy download en_core_web_sm
-Run the web application:
 
-Bash
+
+## Run the web application:
+
+
 
 python app.py
-Open your web browser and navigate to http://127.0.0.1:5000.
+
+
+## Open your web browser
+
+navigate to http://127.0.0.1:5000.
 
 ## How to Use
 Navigate to the web application in your browser.
 
 Click the "Upload Resume" button and select a PDF or DOCX file.
 
-(Optional) Paste the text of a job description into the text area. If left blank, the analyzer will use a smart default.
+Paste the text of a job description into the text area. If left blank, the analyzer will use a smart default.
 
 Click the "Analyze My Resume" button and wait for your report to be generated.
 
 On the report page, you can click "Download Report as PDF" or "Analyze Another Resume".
 
-## Configuration
-The "knowledge" of the analyzer can be easily customized by editing the Python dictionaries at the top of analyzer.py:
+## WHAT YOU GET
+Now you can follow the steps said shown in the report
 
-DOMAIN_KEYWORDS: Add new job fields or keywords to improve automatic job type detection.
-
-DEFAULT_JDS: Add or edit the default job descriptions used for comparison.
-
-BUZZWORDS / OUTDATED_TECH: Keep these lists updated to refine the content analysis.
+The report gives you the changes you should make so that your resume will teh pass the ATS scoring.
