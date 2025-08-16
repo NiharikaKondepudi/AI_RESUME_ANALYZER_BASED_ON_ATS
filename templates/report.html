@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Resume Analysis Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #1d2129;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #1c1e21;
+            padding-bottom: 10px;
+        }
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.5em; border-bottom: 2px solid #e9ecef; margin-top: 40px; }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .actions {
+            text-align: center;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #download-btn { background-color: #1877f2; color: white; }
+        #download-btn:hover { background-color: #166fe5; transform: translateY(-2px); }
+        #back-btn { background-color: #e4e6eb; color: #1c1e21; }
+        #back-btn:hover { background-color: #d8dbdf; transform: translateY(-2px); }
+        .score-circle {
+            width: 150px; height: 150px; border-radius: 50%; background-color: #e7f3ff;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            margin: auto; border: 6px solid #1877f2;
+        }
+        .score { font-size: 48px; font-weight: 700; color: #1877f2; }
+        .grade { font-size: 20px; font-weight: 500; color: #606770; }
+        .section { margin-bottom: 35px; }
+        .ai-summary {
+            font-style: italic; color: #333; background-color: #f0f2f5;
+            border-left: 5px solid #6c757d; padding: 20px; border-radius: 8px; line-height: 1.6;
+        }
+        .recommendations ul { list-style-type: none; padding: 0; }
+        .recommendations li {
+            background-color: #e6f7ff; color: #034c7c; padding: 15px 20px 15px 50px;
+            margin-top: 10px; border-radius: 8px; position: relative; line-height: 1.5;
+        }
+        .recommendations li::before {
+            content: '💡'; position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%); font-size: 1.5em;
+        }
+        .check-category h3 { font-size: 1.2em; color: #4b4f56; display: flex; align-items: center; }
+        .check-category h3::before { margin-right: 10px; font-size: 1.5em; }
+        .check-category.ats h3::before { content: '📄'; }
+        .check-category.content h3::before { content: '✍️'; }
+        .check-category.job-fit h3::before { content: '🎯'; }
+        .check-category.tech h3::before { content: '💻'; }
+        
+        .issue { background-color: #fff0f1; color: #d93025; padding: 12px 15px 12px 40px; margin-top: 8px; border-radius: 6px; position: relative; }
+        .issue::before { content: '❌'; position: absolute; left: 12px; }
+        
+        .success { background-color: #e6f9f0; color: #0f5132; padding: 12px 15px 12px 40px; margin-top: 8px; border-radius: 6px; position: relative; font-weight: 500; }
+        .success::before { content: '✅'; position: absolute; left: 12px; }
+
+        .progress-bar { width: 100%; background-color: #e9ecef; border-radius: 8px; height: 25px; overflow: hidden; margin: 15px 0; }
+        .progress-bar-inner {
+            height: 100%; background-color: #28a745; color: white; display: flex;
+            align-items: center; justify-content: center; font-weight: bold; border-radius: 8px 0 0 8px;
+        }
+        .keywords-container h4 { margin: 15px 0 5px 0; }
+        .keyword-tag { display: inline-block; padding: 5px 12px; margin: 4px; border-radius: 15px; font-size: 0.9em; }
+        .missing { background-color: #f8d7da; color: #721c24; }
+        /* --- NEW: Style for matching keywords --- */
+        .matching { background-color: #d4edda; color: #155724; }
+
+        /* --- NEW: Styles for the collapsible details section --- */
+        details { margin-top: 15px; border-radius: 8px; border: 1px solid #e9ecef; }
+        details summary { cursor: pointer; padding: 12px; font-weight: 500; color: #1877f2; list-style: none; /* Hide default triangle */ }
+        details summary::-webkit-details-marker { display: none; /* Hide default triangle for Chrome/Safari */ }
+        details summary::before { content: '▶'; display: inline-block; margin-right: 8px; transition: transform 0.2s; }
+        details[open] > summary::before { transform: rotate(90deg); }
+        .details-content { padding: 0 15px 15px 15px; }
+
+    </style>
+</head>
+<body>
+    <div class="container" id="report-container">
+        <div class="header">
+            <h1>Resume Analysis Report</h1>
+        </div>
+        <div class="actions">
+            <button id="download-btn" class="button">Download Report as PDF</button>
+            <a href="/" id="back-btn" class="button">Analyze Another Resume</a>
+        </div>
+        <div class="header">
+            <div class="score-circle">
+                <div class="score">{{ report.overall_score }}</div>
+                <div class="grade">Grade: {{ report.resume_grade }}</div>
+            </div>
+        </div>
+        <div class="section recommendations">
+            <h2>Your Personalized Action Plan</h2>
+            <ul>
+                {% for rec in report.personalized_recommendations %}
+                    <li>{{ rec | safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="section">
+            <h2>AI-Generated Summary</h2>
+            <p class="ai-summary">{{ report.ai_generated_summary }}</p>
+        </div>
+        <h2>Detailed Analysis</h2>
+        
+        <div class="section check-category ats">
+            <h3>Formatting & ATS Compatibility</h3>
+            {% if report.classified_checks['Formatting & ATS'].issues %}
+                {% for issue in report.classified_checks['Formatting & ATS'].issues %}
+                    <div class="issue">{{ issue }}</div>
+                {% endfor %}
+            {% else %}
+                <div class="success">Your resume is well-formatted and ATS-friendly.</div>
+            {% endif %}
+        </div>
+        
+        <div class="section check-category content">
+            <h3>Content & Impact</h3>
+            {% if not report.classified_checks['Content & Impact'].issues %}
+                 <div class="success">Your resume content is impactful and uses strong language.</div>
+            {% else %}
+                {% for issue in report.classified_checks['Content & Impact'].issues %}
+                    <div class="issue">{{ issue }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="section check-category job-fit">
+            <h3>Job Fit Analysis</h3>
+            <p>Your resume's alignment with the target job description.</p>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" style="width: {{ report.classified_checks['Job Fit'].score }}%;">
+                    {{ report.classified_checks['Job Fit'].score }}% Match
+                </div>
+            </div>
+            <div class="keywords-container">
+                {% if report.classified_checks['Job Fit'].missing_keywords %}
+                <h4>Missing Keywords</h4>
+                <div>
+                    {% for keyword in report.classified_checks['Job Fit'].missing_keywords[:15] %}
+                        <span class="keyword-tag missing">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if report.classified_checks['Job Fit'].overlap_keywords %}
+                <details>
+                    <summary>Show {{ report.classified_checks['Job Fit'].overlap_keywords | length }} Matching Keywords</summary>
+                    <div class="details-content">
+                        {% for keyword in report.classified_checks['Job Fit'].overlap_keywords %}
+                            <span class="keyword-tag matching">{{ keyword }}</span>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="section check-category tech">
+            <h3>Technology Freshness</h3>
+            {% if report.classified_checks['Technology Freshness'].outdated_tech %}
+                <div class="issue">
+                    Mentions potentially outdated technologies: {{ report.classified_checks['Technology Freshness'].outdated_tech | join(', ') }}
+                </div>
+            {% else %}
+                <div class="success">Your technical skills appear current and relevant.</div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('download-btn').addEventListener('click', function () {
+            const reportElement = document.getElementById('report-container');
+            const options = {
+                margin:       [15, 15, 15, 15],
+                filename:     'resume_analysis_report.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(reportElement).set(options).save();
+        });
+    </script>
+</body>
+</html>

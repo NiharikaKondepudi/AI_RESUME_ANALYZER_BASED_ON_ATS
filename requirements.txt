@@ -1,0 +1,5 @@
+flask
+PyMuPDF
+python-docx
+python-dateutil
+spacy
