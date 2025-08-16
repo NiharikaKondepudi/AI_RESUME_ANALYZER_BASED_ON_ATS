@@ -1,6 +1,9 @@
 AI RESUME ANALYZER
+
 Sriniharikakondepudi
+
 Team member: Sri Niharika Kondepudi
+
 An intelligent web application that uses Natural Language Processing (NLP) and AI to analyze resumes, score them against job descriptions, and provide personalized, actionable feedback for improvement.
 
 You can check the live demo https://youtu.be/YXdmB9qWNDo
@@ -38,10 +41,15 @@ This project is a monolithic web application built with Flask. It uses a server-
 ![alt text](image.png)
 ## Technology Stack
 Backend	Python, Flask
+
 NLP & AI	spaCy, Hugging Face Transformers
+
 Parsing	PyMuPDF, python-docx
+
 OCR	Tesseract, Pillow
+
 Frontend	HTML, CSS, JavaScript
+
 ## Local Setup and Installation
 To run this project on your local machine, follow these steps.
 
